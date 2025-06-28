@@ -16,7 +16,4 @@ public class ConsultarReniecService {
         return reniecClientPort.consultarPorDni(dni);
     }
 
-    public String consultarDniFactiliza(String dni) {
-        return reniecClientPort.consultarPorDniFactiliza(dni);
-    }
 }

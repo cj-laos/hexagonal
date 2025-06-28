@@ -18,8 +18,4 @@ public class ReniecAdapter implements ReniecClientPort {
         return reniecRestClient.consultarPorDni(dni);
     }
 
-    @Override
-    public String consultarPorDniFactiliza(String dni) {
-        return reniecRestClient.consultarPorDniFactiliza(dni);
-    }
 }

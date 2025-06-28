@@ -18,8 +18,4 @@ public class ReniecController {
         return reniecService.consultarDni(numero);
     }
 
-    @GetMapping("/factiliza/dni/{numero}")
-    public String getDatosPorDniFactiliza(@PathVariable String numero) {
-        return reniecService.consultarDniFactiliza(numero);
-    }
 }
