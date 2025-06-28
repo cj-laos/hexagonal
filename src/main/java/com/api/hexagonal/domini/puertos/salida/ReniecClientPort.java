@@ -1,5 +1,7 @@
 package com.api.hexagonal.domini.puertos.salida;
 
-public class ReniecClientPort {
-    
+public interface ReniecClientPort {
+    String consultarPorDni(String dni);
+
+    String consultarPorDniFactiliza(String dni);
 }
