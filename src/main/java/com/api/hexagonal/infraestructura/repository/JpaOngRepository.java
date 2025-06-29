@@ -1,5 +1,11 @@
 package com.api.hexagonal.infraestructura.repository;
 
-public class JpaOngRepository {
-    
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.api.hexagonal.infraestructura.entity.OngEntity;
+
+public interface JpaOngRepository extends JpaRepository<OngEntity, Integer> {
+    Optional<OngEntity> findByRuc(String ruc);
 }

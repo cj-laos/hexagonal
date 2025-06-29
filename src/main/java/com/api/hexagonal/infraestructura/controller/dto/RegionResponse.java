@@ -1,4 +1,4 @@
-package com.api.hexagonal.domini.modelo;
+package com.api.hexagonal.infraestructura.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioAdmin {
+public class RegionResponse {
     private Integer id;
     private String nombre;
-    private String email;
-    private String pass;
 }
