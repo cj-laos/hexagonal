@@ -1,14 +1,16 @@
 package com.api.hexagonal.domini.puertos.salida;
 
 import java.util.*;
-import com.api.hexagonal.infraestructura.entity.RegionEntity;
+import com.api.hexagonal.domini.modelo.Region;
 
 public interface RegionRepositoryPort {
-    RegionEntity save(RegionEntity entity);
+    Region save(Region region);
 
-    Optional<RegionEntity> findById(Integer id);
+    Optional<Region> findById(Integer id);
 
-    void deleteById(Integer id);
+    List<Region> findAll();
 
-    List<RegionEntity> findAll();
+    boolean deleteById(Integer id);
+
+    boolean existsByName(String name);
 }

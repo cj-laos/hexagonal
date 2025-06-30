@@ -2,6 +2,8 @@ package com.api.hexagonal.infraestructura.entity;
 
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -14,19 +16,21 @@ public class RepresentanteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 8)
     private String dni;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String nombres;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String apellidos;
 
+    @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
-    private Boolean verificadoReniec = false;
+    @Column(name = "verificado_reniec", columnDefinition = "boolean default false")
+    private Boolean verificadoReniec;
 
-    @OneToOne(mappedBy = "representante")
-    private OngEntity ong;
+    @OneToMany(mappedBy = "representante", fetch = FetchType.LAZY)
+    private List<OngEntity> ongs;
 }

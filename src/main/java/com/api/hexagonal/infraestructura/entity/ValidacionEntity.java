@@ -27,6 +27,6 @@ public class ValidacionEntity {
 
     private String comentario;
 
-    @Column(name = "fecha_validacion", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()")
+    @Column(name = "fecha_validacion", nullable = false)
     private LocalDateTime fechaValidacion;
 }

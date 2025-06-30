@@ -1,58 +1,73 @@
 package com.api.hexagonal.infraestructura.controller;
 
 import com.api.hexagonal.domini.modelo.Region;
-import com.api.hexagonal.domini.puertos.entrada.ActualizarRegionUseCase;
-import com.api.hexagonal.domini.puertos.entrada.ConsultarRegionUseCase;
-import com.api.hexagonal.domini.puertos.entrada.EliminarRegionUseCase;
-import com.api.hexagonal.domini.puertos.entrada.RegistrarRegionUseCase;
-import com.api.hexagonal.infraestructura.controller.dto.RegionRequest;
-import com.api.hexagonal.infraestructura.controller.dto.RegionResponse;
-import com.api.hexagonal.infraestructura.controller.mapper.RegionDtoMapper;
+import com.api.hexagonal.domini.puertos.entrada.UpdateRegionUseCase;
+import com.api.hexagonal.domini.puertos.entrada.RetrieveRegionUseCase;
+import com.api.hexagonal.domini.puertos.entrada.DeleteRegionUseCase;
+import com.api.hexagonal.domini.puertos.entrada.CreateRegionUseCase;
+import com.api.hexagonal.infraestructura.controller.dto.RegionRequestDto;
+import com.api.hexagonal.infraestructura.controller.dto.RegionResponseDto;
+import com.api.hexagonal.infraestructura.controller.mapper.RegionControllerMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/regions")
+@RequestMapping("/api/regiones")
 @RequiredArgsConstructor
 public class RegionController {
 
-    private final RegistrarRegionUseCase createRegionUseCase;
-    private final ConsultarRegionUseCase retrieveRegionUseCase;
-    private final ActualizarRegionUseCase updateRegionUseCase;
-    private final EliminarRegionUseCase deleteRegionUseCase;
+    private final CreateRegionUseCase createRegionUseCase;
+    private final RetrieveRegionUseCase retrieveRegionUseCase;
+    private final UpdateRegionUseCase updateRegionUseCase;
+    private final DeleteRegionUseCase deleteRegionUseCase;
 
     @PostMapping
-    public ResponseEntity<RegionResponse> createRegion(@RequestBody RegionRequest request) {
-        Region region = RegionDtoMapper.toDomain(request);
-        Region createdRegion = createRegionUseCase.createRegion(region);
-        return new ResponseEntity<>(RegionDtoMapper.toResponse(createdRegion), HttpStatus.CREATED);
+    public ResponseEntity<RegionResponseDto> createRegion(@RequestBody RegionRequestDto requestDto) {
+        try {
+            Region domain = RegionControllerMapper.toDomain(requestDto);
+            Region createdDomain = createRegionUseCase.createRegion(domain);
+            return new ResponseEntity<>(RegionControllerMapper.toDto(createdDomain), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RegionResponse> getRegionById(@PathVariable Integer id) {
+    public ResponseEntity<RegionResponseDto> getRegionById(@PathVariable Integer id) {
         return retrieveRegionUseCase.getRegionById(id)
-                .map(reg -> new ResponseEntity<>(RegionDtoMapper.toResponse(reg), HttpStatus.OK))
+                .map(RegionControllerMapper::toDto)
+                .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping
-    public ResponseEntity<List<RegionResponse>> getAllRegions() {
-        List<RegionResponse> regions = retrieveRegionUseCase.getAllRegions().stream()
-                .map(RegionDtoMapper::toResponse)
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(regions, HttpStatus.OK);
+    public ResponseEntity<List<RegionResponseDto>> getAllRegions() {
+        List<Region> domainList = retrieveRegionUseCase.getAllRegions();
+        List<RegionResponseDto> dtoList = RegionControllerMapper.toDtoList(domainList);
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RegionResponse> updateRegion(@PathVariable Integer id, @RequestBody RegionRequest request) {
-        Region regionDetails = RegionDtoMapper.toDomain(request);
-        return updateRegionUseCase.updateRegion(id, regionDetails)
-                .map(reg -> new ResponseEntity<>(RegionDtoMapper.toResponse(reg), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<RegionResponseDto> updateRegion(@PathVariable Integer id,
+            @RequestBody RegionRequestDto requestDto) {
+        try {
+            Region domainToUpdate = RegionControllerMapper.toDomain(requestDto);
+            domainToUpdate.setId(id);
+
+            return updateRegionUseCase.updateRegion(id, domainToUpdate)
+                    .map(RegionControllerMapper::toDto)
+                    .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
+                    .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @DeleteMapping("/{id}")

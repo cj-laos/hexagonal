@@ -2,14 +2,18 @@ package com.api.hexagonal.domini.puertos.salida;
 
 import java.util.*;
 
-import com.api.hexagonal.infraestructura.entity.RepresentanteEntity;
+import com.api.hexagonal.domini.modelo.Representante;
 
 public interface RepresentanteRepositoryPort {
-    RepresentanteEntity save(RepresentanteEntity entity);
+    Representante save(Representante representante);
 
-    Optional<RepresentanteEntity> findById(Integer id);
+    Optional<Representante> findById(Integer id);
 
-    void deleteById(Integer id);
+    Optional<Representante> findByDni(String dni);
 
-    List<RepresentanteEntity> findAll();
+    List<Representante> findAll();
+
+    boolean deleteById(Integer id);
+
+    boolean existsByDni(String dni);
 }

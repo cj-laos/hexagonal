@@ -1,15 +1,15 @@
-package com.api.hexagonal.domini.modelo;
+package com.api.hexagonal.infraestructura.controller.dto;
 
+import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Representante {
-    private Integer id;
+public class RepresentanteRequestDto {
     private String dni;
     private String nombres;
     private String apellidos;

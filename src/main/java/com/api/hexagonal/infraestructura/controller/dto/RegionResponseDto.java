@@ -1,13 +1,13 @@
-package com.api.hexagonal.domini.modelo;
+package com.api.hexagonal.infraestructura.controller.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Sector {
+public class RegionResponseDto {
     private Integer id;
     private String nombre;
 }

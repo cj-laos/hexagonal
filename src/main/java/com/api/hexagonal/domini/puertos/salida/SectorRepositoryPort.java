@@ -2,14 +2,16 @@ package com.api.hexagonal.domini.puertos.salida;
 
 import java.util.*;
 
-import com.api.hexagonal.infraestructura.entity.SectorEntity;
+import com.api.hexagonal.domini.modelo.Sector;
 
 public interface SectorRepositoryPort {
-    SectorEntity save(SectorEntity entity);
+    Sector save(Sector sector);
 
-    Optional<SectorEntity> findById(Integer id);
+    Optional<Sector> findById(Integer id);
 
-    void deleteById(Integer id);
+    List<Sector> findAll();
 
-    List<SectorEntity> findAll();
+    boolean deleteById(Integer id);
+
+    boolean existsByName(String name);
 }

@@ -1,11 +1,11 @@
 package com.api.hexagonal.infraestructura.controller.mapper;
 
 import com.api.hexagonal.domini.modelo.Region;
-import com.api.hexagonal.infraestructura.controller.dto.RegionRequest;
-import com.api.hexagonal.infraestructura.controller.dto.RegionResponse;
+import com.api.hexagonal.infraestructura.controller.dto.RegionRequestDto;
+import com.api.hexagonal.infraestructura.controller.dto.RegionResponseDto;
 
 public class RegionDtoMapper {
-    public static Region toDomain(RegionRequest request) {
+    public static Region toDomain(RegionRequestDto request) {
         if (request == null)
             return null;
         Region region = new Region();
@@ -13,10 +13,10 @@ public class RegionDtoMapper {
         return region;
     }
 
-    public static RegionResponse toResponse(Region region) {
+    public static RegionResponseDto toResponse(Region region) {
         if (region == null)
             return null;
-        RegionResponse response = new RegionResponse();
+        RegionResponseDto response = new RegionResponseDto();
         response.setId(region.getId());
         response.setNombre(region.getNombre());
         return response;

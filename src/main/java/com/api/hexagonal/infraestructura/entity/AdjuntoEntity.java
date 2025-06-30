@@ -20,5 +20,6 @@ public class AdjuntoEntity {
     @Column(name = "url_archivo", nullable = false)
     private String urlArchivo;
 
+    @Column
     private String descripcion;
 }
