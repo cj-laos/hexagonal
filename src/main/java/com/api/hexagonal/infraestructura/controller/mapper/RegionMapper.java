@@ -7,7 +7,7 @@ import com.api.hexagonal.domini.modelo.Region;
 import com.api.hexagonal.infraestructura.controller.dto.RegionRequestDto;
 import com.api.hexagonal.infraestructura.controller.dto.RegionResponseDto;
 
-public class RegionControllerMapper {
+public class RegionMapper {
     public static Region toDomain(RegionRequestDto dto) {
         if (dto == null)
             return null;
@@ -22,7 +22,7 @@ public class RegionControllerMapper {
 
     public static List<RegionResponseDto> toDtoList(List<Region> domainList) {
         return domainList.stream()
-                .map(RegionControllerMapper::toDto)
+                .map(RegionMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

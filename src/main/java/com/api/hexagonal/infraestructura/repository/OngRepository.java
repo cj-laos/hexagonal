@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.api.hexagonal.infraestructura.entity.OngEntity;
 
-public interface JpaOngRepository extends JpaRepository<OngEntity, Integer> {
+public interface OngRepository extends JpaRepository<OngEntity, Integer> {
     Optional<OngEntity> findByRuc(String ruc);
+
+    boolean existsByRuc(String ruc);
 }

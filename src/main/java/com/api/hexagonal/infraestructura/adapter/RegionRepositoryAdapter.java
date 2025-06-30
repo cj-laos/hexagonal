@@ -7,7 +7,7 @@ import com.api.hexagonal.aplicacion.mapper.RegionMapper;
 import com.api.hexagonal.domini.modelo.Region;
 import com.api.hexagonal.domini.puertos.salida.RegionRepositoryPort;
 import com.api.hexagonal.infraestructura.entity.RegionEntity;
-import com.api.hexagonal.infraestructura.repository.JpaRegionRepository;
+import com.api.hexagonal.infraestructura.repository.RegionRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RegionRepositoryAdapter implements RegionRepositoryPort {
 
-    private final JpaRegionRepository jpaRegionRepository;
+    private final RegionRepository jpaRegionRepository;
 
     @Override
     public Region save(Region region) {

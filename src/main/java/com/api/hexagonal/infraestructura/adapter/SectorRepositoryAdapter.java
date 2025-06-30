@@ -7,7 +7,7 @@ import com.api.hexagonal.aplicacion.mapper.SectorMapper;
 import com.api.hexagonal.domini.modelo.Sector;
 import com.api.hexagonal.domini.puertos.salida.SectorRepositoryPort;
 import com.api.hexagonal.infraestructura.entity.SectorEntity;
-import com.api.hexagonal.infraestructura.repository.JpaSectorRepository;
+import com.api.hexagonal.infraestructura.repository.SectorRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SectorRepositoryAdapter implements SectorRepositoryPort {
 
-    private final JpaSectorRepository jpaSectorRepository;
+    private final SectorRepository jpaSectorRepository;
 
     @Override
     public Sector save(Sector sector) {

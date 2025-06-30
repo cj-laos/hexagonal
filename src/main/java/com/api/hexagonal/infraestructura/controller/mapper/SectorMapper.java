@@ -7,7 +7,7 @@ import com.api.hexagonal.domini.modelo.Sector;
 import com.api.hexagonal.infraestructura.controller.dto.SectorRequestDto;
 import com.api.hexagonal.infraestructura.controller.dto.SectorResponseDto;
 
-public class SectorControllerMapper {
+public class SectorMapper {
     public static Sector toDomain(SectorRequestDto dto) {
         if (dto == null)
             return null;
@@ -22,7 +22,7 @@ public class SectorControllerMapper {
 
     public static List<SectorResponseDto> toDtoList(List<Sector> domainList) {
         return domainList.stream()
-                .map(SectorControllerMapper::toDto)
+                .map(SectorMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

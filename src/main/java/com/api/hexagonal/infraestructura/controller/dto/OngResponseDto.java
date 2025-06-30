@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OngRequestDto {
+public class OngResponseDto {
+    private Integer id;
     private String nombre;
     private String ruc;
     private Integer representanteId;

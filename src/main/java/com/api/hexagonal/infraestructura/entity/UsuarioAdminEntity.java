@@ -24,5 +24,5 @@ public class UsuarioAdminEntity {
     private String password;
 
     @OneToMany(mappedBy = "admin")
-    private List<ValidacionEntity> validaciones;
+    private List<ValidacionEntity> validacionesRealizadas;
 }

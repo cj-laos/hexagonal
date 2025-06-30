@@ -12,7 +12,7 @@ import com.api.hexagonal.domini.puertos.entrada.RetrieveSectorUseCase;
 import com.api.hexagonal.domini.puertos.entrada.UpdateSectorUseCase;
 import com.api.hexagonal.infraestructura.controller.dto.SectorRequestDto;
 import com.api.hexagonal.infraestructura.controller.dto.SectorResponseDto;
-import com.api.hexagonal.infraestructura.controller.mapper.SectorControllerMapper;
+import com.api.hexagonal.infraestructura.controller.mapper.SectorMapper;
 
 import java.util.List;
 
@@ -29,9 +29,9 @@ public class SectorController {
     @PostMapping
     public ResponseEntity<SectorResponseDto> createSector(@RequestBody SectorRequestDto requestDto) {
         try {
-            Sector domain = SectorControllerMapper.toDomain(requestDto);
+            Sector domain = SectorMapper.toDomain(requestDto);
             Sector createdDomain = createSectorUseCase.createSector(domain);
-            return new ResponseEntity<>(SectorControllerMapper.toDto(createdDomain), HttpStatus.CREATED);
+            return new ResponseEntity<>(SectorMapper.toDto(createdDomain), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (RuntimeException e) {
@@ -42,7 +42,7 @@ public class SectorController {
     @GetMapping("/{id}")
     public ResponseEntity<SectorResponseDto> getSectorById(@PathVariable Integer id) {
         return retrieveSectorUseCase.getSectorById(id)
-                .map(SectorControllerMapper::toDto)
+                .map(SectorMapper::toDto)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -50,7 +50,7 @@ public class SectorController {
     @GetMapping
     public ResponseEntity<List<SectorResponseDto>> getAllSectors() {
         List<Sector> domainList = retrieveSectorUseCase.getAllSectors();
-        List<SectorResponseDto> dtoList = SectorControllerMapper.toDtoList(domainList);
+        List<SectorResponseDto> dtoList = SectorMapper.toDtoList(domainList);
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
@@ -58,11 +58,11 @@ public class SectorController {
     public ResponseEntity<SectorResponseDto> updateSector(@PathVariable Integer id,
             @RequestBody SectorRequestDto requestDto) {
         try {
-            Sector domainToUpdate = SectorControllerMapper.toDomain(requestDto);
+            Sector domainToUpdate = SectorMapper.toDomain(requestDto);
             domainToUpdate.setId(id);
 
             return updateSectorUseCase.updateSector(id, domainToUpdate)
-                    .map(SectorControllerMapper::toDto)
+                    .map(SectorMapper::toDto)
                     .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (IllegalArgumentException e) {

@@ -7,7 +7,7 @@ import com.api.hexagonal.domini.modelo.Representante;
 import com.api.hexagonal.infraestructura.controller.dto.RepresentanteRequestDto;
 import com.api.hexagonal.infraestructura.controller.dto.RepresentanteResponseDto;
 
-public class RepresentanteControllerMapper {
+public class RepresentanteMapper {
     public static Representante toDomain(RepresentanteRequestDto dto) {
         if (dto == null)
             return null;
@@ -34,7 +34,7 @@ public class RepresentanteControllerMapper {
 
     public static List<RepresentanteResponseDto> toDtoList(List<Representante> domainList) {
         return domainList.stream()
-                .map(RepresentanteControllerMapper::toDto)
+                .map(RepresentanteMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

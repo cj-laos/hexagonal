@@ -1,17 +1,19 @@
 package com.api.hexagonal.domini.puertos.salida;
 
-import com.api.hexagonal.infraestructura.entity.OngEntity;
+import com.api.hexagonal.domini.modelo.Ong;
 import java.util.List;
 import java.util.Optional;
 
 public interface OngRepositoryPort {
-    OngEntity save(OngEntity ong);
+    Ong save(Ong ong);
 
-    Optional<OngEntity> findById(Integer id);
+    Optional<Ong> findById(Integer id);
 
-    Optional<OngEntity> findByRuc(String ruc);
+    Optional<Ong> findByRuc(String ruc);
 
-    void deleteById(Integer id);
+    List<Ong> findAll();
 
-    List<OngEntity> findAll();
+    boolean deleteById(Integer id);
+
+    boolean existsByRuc(String ruc);
 }

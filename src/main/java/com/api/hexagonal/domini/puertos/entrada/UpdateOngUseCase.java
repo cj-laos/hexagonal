@@ -4,6 +4,6 @@ import java.util.Optional;
 
 import com.api.hexagonal.domini.modelo.Ong;
 
-public interface ActualizarOngUseCase {
+public interface UpdateOngUseCase {
     Optional<Ong> updateOng(Integer id, Ong ong);
 }

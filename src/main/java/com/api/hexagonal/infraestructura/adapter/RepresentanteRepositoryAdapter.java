@@ -9,7 +9,7 @@ import com.api.hexagonal.aplicacion.mapper.RepresentanteMapper;
 import com.api.hexagonal.domini.modelo.Representante;
 import com.api.hexagonal.domini.puertos.salida.RepresentanteRepositoryPort;
 import com.api.hexagonal.infraestructura.entity.RepresentanteEntity;
-import com.api.hexagonal.infraestructura.repository.JpaRepresentanteRepository;
+import com.api.hexagonal.infraestructura.repository.RepresentanteRepository;
 
 import lombok.RequiredArgsConstructor;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RepresentanteRepositoryAdapter implements RepresentanteRepositoryPort {
 
-    private final JpaRepresentanteRepository jpaRepresentanteRepository;
+    private final RepresentanteRepository jpaRepresentanteRepository;
 
     @Override
     public Representante save(Representante representante) {

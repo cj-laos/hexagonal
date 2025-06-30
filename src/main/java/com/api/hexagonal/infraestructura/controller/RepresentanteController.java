@@ -13,7 +13,7 @@ import com.api.hexagonal.domini.puertos.entrada.RetrieveRepresentanteUseCase;
 import com.api.hexagonal.domini.puertos.entrada.UpdateRepresentanteUseCase;
 import com.api.hexagonal.infraestructura.controller.dto.RepresentanteRequestDto;
 import com.api.hexagonal.infraestructura.controller.dto.RepresentanteResponseDto;
-import com.api.hexagonal.infraestructura.controller.mapper.RepresentanteControllerMapper;
+import com.api.hexagonal.infraestructura.controller.mapper.RepresentanteMapper;
 
 import java.util.List;
 
@@ -32,9 +32,9 @@ public class RepresentanteController {
     public ResponseEntity<RepresentanteResponseDto> createRepresentante(
             @RequestBody RepresentanteRequestDto requestDto) {
         try {
-            Representante domain = RepresentanteControllerMapper.toDomain(requestDto);
+            Representante domain = RepresentanteMapper.toDomain(requestDto);
             Representante createdDomain = createRepresentanteUseCase.createRepresentante(domain);
-            return new ResponseEntity<>(RepresentanteControllerMapper.toDto(createdDomain), HttpStatus.CREATED);
+            return new ResponseEntity<>(RepresentanteMapper.toDto(createdDomain), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (RuntimeException e) {
@@ -45,7 +45,7 @@ public class RepresentanteController {
     @GetMapping("/{id}")
     public ResponseEntity<RepresentanteResponseDto> getRepresentanteById(@PathVariable Integer id) {
         return retrieveRepresentanteUseCase.getRepresentanteById(id)
-                .map(RepresentanteControllerMapper::toDto)
+                .map(RepresentanteMapper::toDto)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -53,7 +53,7 @@ public class RepresentanteController {
     @GetMapping("/dni/{dni}")
     public ResponseEntity<RepresentanteResponseDto> getRepresentanteByDni(@PathVariable String dni) {
         return retrieveRepresentanteByDniUseCase.getRepresentanteByDni(dni)
-                .map(RepresentanteControllerMapper::toDto)
+                .map(RepresentanteMapper::toDto)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -61,7 +61,7 @@ public class RepresentanteController {
     @GetMapping
     public ResponseEntity<List<RepresentanteResponseDto>> getAllRepresentantes() {
         List<Representante> domainList = retrieveRepresentanteUseCase.getAllRepresentantes();
-        List<RepresentanteResponseDto> dtoList = RepresentanteControllerMapper.toDtoList(domainList);
+        List<RepresentanteResponseDto> dtoList = RepresentanteMapper.toDtoList(domainList);
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
@@ -69,11 +69,11 @@ public class RepresentanteController {
     public ResponseEntity<RepresentanteResponseDto> updateRepresentante(@PathVariable Integer id,
             @RequestBody RepresentanteRequestDto requestDto) {
         try {
-            Representante domainToUpdate = RepresentanteControllerMapper.toDomain(requestDto);
+            Representante domainToUpdate = RepresentanteMapper.toDomain(requestDto);
             domainToUpdate.setId(id);
 
             return updateRepresentanteUseCase.updateRepresentante(id, domainToUpdate)
-                    .map(RepresentanteControllerMapper::toDto)
+                    .map(RepresentanteMapper::toDto)
                     .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (IllegalArgumentException e) {

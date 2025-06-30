@@ -7,7 +7,7 @@ import com.api.hexagonal.domini.puertos.entrada.DeleteRegionUseCase;
 import com.api.hexagonal.domini.puertos.entrada.CreateRegionUseCase;
 import com.api.hexagonal.infraestructura.controller.dto.RegionRequestDto;
 import com.api.hexagonal.infraestructura.controller.dto.RegionResponseDto;
-import com.api.hexagonal.infraestructura.controller.mapper.RegionControllerMapper;
+import com.api.hexagonal.infraestructura.controller.mapper.RegionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +27,9 @@ public class RegionController {
     @PostMapping
     public ResponseEntity<RegionResponseDto> createRegion(@RequestBody RegionRequestDto requestDto) {
         try {
-            Region domain = RegionControllerMapper.toDomain(requestDto);
+            Region domain = RegionMapper.toDomain(requestDto);
             Region createdDomain = createRegionUseCase.createRegion(domain);
-            return new ResponseEntity<>(RegionControllerMapper.toDto(createdDomain), HttpStatus.CREATED);
+            return new ResponseEntity<>(RegionMapper.toDto(createdDomain), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (RuntimeException e) {
@@ -40,7 +40,7 @@ public class RegionController {
     @GetMapping("/{id}")
     public ResponseEntity<RegionResponseDto> getRegionById(@PathVariable Integer id) {
         return retrieveRegionUseCase.getRegionById(id)
-                .map(RegionControllerMapper::toDto)
+                .map(RegionMapper::toDto)
                 .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -48,7 +48,7 @@ public class RegionController {
     @GetMapping
     public ResponseEntity<List<RegionResponseDto>> getAllRegions() {
         List<Region> domainList = retrieveRegionUseCase.getAllRegions();
-        List<RegionResponseDto> dtoList = RegionControllerMapper.toDtoList(domainList);
+        List<RegionResponseDto> dtoList = RegionMapper.toDtoList(domainList);
         return new ResponseEntity<>(dtoList, HttpStatus.OK);
     }
 
@@ -56,11 +56,11 @@ public class RegionController {
     public ResponseEntity<RegionResponseDto> updateRegion(@PathVariable Integer id,
             @RequestBody RegionRequestDto requestDto) {
         try {
-            Region domainToUpdate = RegionControllerMapper.toDomain(requestDto);
+            Region domainToUpdate = RegionMapper.toDomain(requestDto);
             domainToUpdate.setId(id);
 
             return updateRegionUseCase.updateRegion(id, domainToUpdate)
-                    .map(RegionControllerMapper::toDto)
+                    .map(RegionMapper::toDto)
                     .map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (IllegalArgumentException e) {

@@ -1,17 +1,17 @@
 package com.api.hexagonal.domini.puertos.salida;
 
-import com.api.hexagonal.infraestructura.entity.ValidacionEntity;
+import com.api.hexagonal.domini.modelo.Validacion;
 import java.util.List;
 import java.util.Optional;
 
 public interface ValidacionRepositoryPort {
-    ValidacionEntity save(ValidacionEntity validacion);
+    Validacion save(Validacion validacion);
 
-    Optional<ValidacionEntity> findById(Integer id);
+    Optional<Validacion> findById(Integer id);
 
-    void deleteById(Integer id);
+    List<Validacion> findAll();
 
-    List<ValidacionEntity> findAll();
+    List<Validacion> findByOngId(Integer ongId);
 
-    List<ValidacionEntity> findByOngId(Integer ongId);
+    boolean deleteById(Integer id);
 }
