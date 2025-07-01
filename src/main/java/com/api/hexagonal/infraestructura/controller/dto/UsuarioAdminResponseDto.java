@@ -11,4 +11,5 @@ public class UsuarioAdminResponseDto {
     private Integer id;
     private String nombre;
     private String email;
+    private String pass;
 }

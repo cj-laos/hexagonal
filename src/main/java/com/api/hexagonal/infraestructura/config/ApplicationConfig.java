@@ -7,6 +7,8 @@ import com.api.hexagonal.infraestructura.adapter.*;
 import com.api.hexagonal.infraestructura.repository.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfig {
@@ -179,8 +181,9 @@ public class ApplicationConfig {
 
     // Casos de Uso para UsuarioAdmin
     @Bean
-    public CreateUsuarioAdminUseCase createUsuarioAdminUseCase(UsuarioAdminRepositoryPort usuarioAdminRepositoryPort) {
-        return new CreateUsuarioAdminService(usuarioAdminRepositoryPort);
+    public CreateUsuarioAdminUseCase createUsuarioAdminUseCase(UsuarioAdminRepositoryPort usuarioAdminRepositoryPort,
+            PasswordEncoder passwordEncoder) {
+        return new CreateUsuarioAdminService(usuarioAdminRepositoryPort, passwordEncoder);
     }
 
     @Bean
@@ -190,8 +193,9 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public UpdateUsuarioAdminUseCase updateUsuarioAdminUseCase(UsuarioAdminRepositoryPort usuarioAdminRepositoryPort) {
-        return new UpdateUsuarioAdminService(usuarioAdminRepositoryPort);
+    public UpdateUsuarioAdminUseCase updateUsuarioAdminUseCase(UsuarioAdminRepositoryPort usuarioAdminRepositoryPort,
+            PasswordEncoder passwordEncoder) {
+        return new UpdateUsuarioAdminService(usuarioAdminRepositoryPort, passwordEncoder);
     }
 
     @Bean

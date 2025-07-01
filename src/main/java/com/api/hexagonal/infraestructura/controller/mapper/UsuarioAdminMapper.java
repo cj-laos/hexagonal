@@ -24,7 +24,8 @@ public class UsuarioAdminMapper {
         return new UsuarioAdminResponseDto(
                 domain.getId(),
                 domain.getNombre(),
-                domain.getEmail());
+                domain.getEmail(),
+                domain.getPass());
     }
 
     public static List<UsuarioAdminResponseDto> toDtoList(List<UsuarioAdmin> domainList) {
