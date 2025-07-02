@@ -25,10 +25,11 @@ public class CreateOngService implements CreateOngUseCase {
             throw new IllegalArgumentException("Ya existe una ONG con el RUC: " + ong.getRuc());
         }
 
-        if (ong.getRepresentanteId() != null
-                && !representanteRepositoryPort.findById(ong.getRepresentanteId()).isPresent()) {
-            throw new IllegalArgumentException("El Representante con ID " + ong.getRepresentanteId() + " no existe.");
+        if (ong.getRepresentanteId() != null &&
+                !representanteRepositoryPort.findByDni(ong.getRepresentanteId().toString()).isPresent()) {
+            throw new IllegalArgumentException("El Representante con DNI " + ong.getRepresentanteId() + " no existe.");
         }
+
         if (ong.getSectorId() != null && !sectorRepositoryPort.findById(ong.getSectorId()).isPresent()) {
             throw new IllegalArgumentException("El Sector con ID " + ong.getSectorId() + " no existe.");
         }

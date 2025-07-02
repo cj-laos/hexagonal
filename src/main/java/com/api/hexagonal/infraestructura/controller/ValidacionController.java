@@ -1,10 +1,13 @@
 package com.api.hexagonal.infraestructura.controller;
 
+import com.api.hexagonal.domini.modelo.Ong;
 import com.api.hexagonal.domini.modelo.Validacion;
 import com.api.hexagonal.domini.puertos.entrada.CreateValidacionUseCase;
 import com.api.hexagonal.domini.puertos.entrada.RetrieveValidacionUseCase;
 import com.api.hexagonal.domini.puertos.entrada.UpdateValidacionUseCase;
 import com.api.hexagonal.domini.puertos.entrada.DeleteValidacionUseCase;
+import com.api.hexagonal.domini.puertos.entrada.RetrieveOngUseCase;
+import com.api.hexagonal.infraestructura.controller.dto.EstadoValidacionDto;
 import com.api.hexagonal.infraestructura.controller.dto.ValidacionRequestDto;
 import com.api.hexagonal.infraestructura.controller.dto.ValidacionResponseDto;
 import com.api.hexagonal.infraestructura.controller.mapper.ValidacionMapper;
@@ -23,11 +26,20 @@ public class ValidacionController {
     private final RetrieveValidacionUseCase retrieveValidacionUseCase;
     private final UpdateValidacionUseCase updateValidacionUseCase;
     private final DeleteValidacionUseCase deleteValidacionUseCase;
+    private final RetrieveOngUseCase retrieveOngUseCase;
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<ValidacionResponseDto> createValidacion(@RequestBody ValidacionRequestDto requestDto) {
         try {
+            // Buscar la ONG por RUC
+            Ong ong = retrieveOngUseCase.getOngByRuc(requestDto.getRuc())
+                    .orElseThrow(() -> new IllegalArgumentException("RUC no válido"));
+
+            // Mapear el DTO al dominio (sin ONG ID)
             Validacion domain = ValidacionMapper.toDomain(requestDto);
+            domain.setOngId(ong.getId()); // Setear el ID obtenido por RUC
+
+            // Crear validación
             Validacion createdDomain = createValidacionUseCase.createValidacion(domain);
             return new ResponseEntity<>(ValidacionMapper.toDto(createdDomain), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
@@ -84,4 +96,23 @@ public class ValidacionController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<String> actualizarEstadoValidacion(
+            @PathVariable Integer id,
+            @RequestBody EstadoValidacionDto dto) {
+
+        boolean actualizado = updateValidacionUseCase.actualizarEstado(
+                id,
+                dto.getEstadoValidacion(),
+                dto.getAdminId() // ← nuevo parámetro
+        );
+
+        if (actualizado) {
+            return ResponseEntity.ok("Estado actualizado correctamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Validación no encontrada");
+        }
+    }
+
 }

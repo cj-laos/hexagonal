@@ -1,8 +1,10 @@
 package com.api.hexagonal.infraestructura.controller;
 
 import com.api.hexagonal.domini.modelo.Adjunto;
+import com.api.hexagonal.domini.modelo.Ong;
 import com.api.hexagonal.domini.puertos.entrada.CreateAdjuntoUseCase;
 import com.api.hexagonal.domini.puertos.entrada.RetrieveAdjuntoUseCase;
+import com.api.hexagonal.domini.puertos.entrada.RetrieveOngUseCase;
 import com.api.hexagonal.domini.puertos.entrada.UpdateAdjuntoUseCase;
 import com.api.hexagonal.domini.puertos.entrada.DeleteAdjuntoUseCase;
 import com.api.hexagonal.infraestructura.controller.dto.AdjuntoRequestDto;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/adjuntos")
@@ -23,13 +26,27 @@ public class AdjuntoController {
     private final RetrieveAdjuntoUseCase retrieveAdjuntoUseCase;
     private final UpdateAdjuntoUseCase updateAdjuntoUseCase;
     private final DeleteAdjuntoUseCase deleteAdjuntoUseCase;
+    private final RetrieveOngUseCase retrieveOngUseCase;
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<AdjuntoResponseDto> createAdjunto(@RequestBody AdjuntoRequestDto requestDto) {
         try {
+            // Buscar ONG por RUC
+            String ruc = requestDto.getRuc();
+            Optional<Ong> ongOptional = retrieveOngUseCase.getOngByRuc(ruc);
+
+            if (ongOptional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+
+            // Construir Adjunto con el ID de la ONG
+            Integer ongId = ongOptional.get().getId();
             Adjunto domain = AdjuntoMapper.toDomain(requestDto);
+            domain.setOngId(ongId); // asignar el id aquí
+
             Adjunto createdDomain = createAdjuntoUseCase.createAdjunto(domain);
             return new ResponseEntity<>(AdjuntoMapper.toDto(createdDomain), HttpStatus.CREATED);
+
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (RuntimeException e) {

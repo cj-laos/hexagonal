@@ -8,7 +8,8 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdjuntoRequestDto {
-    private Integer ongId;
-    private String urlArchivo;
+    // AdjuntoRequestDto.java
     private String descripcion;
+    private String urlArchivo;
+    private String ruc;
 }

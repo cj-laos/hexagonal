@@ -10,6 +10,7 @@ import com.api.hexagonal.infraestructura.repository.SectorRepository;
 import com.api.hexagonal.infraestructura.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,15 +27,23 @@ public class OngRepositoryAdapter implements OngRepositoryPort {
     @Override
     public Ong save(Ong ong) {
         OngEntity entity = OngMapper.toEntity(ong);
+
+        // 🔁 Buscar representante por DNI, no por ID
         if (ong.getRepresentanteId() != null) {
-            jpaRepresentanteRepository.findById(ong.getRepresentanteId()).ifPresent(entity::setRepresentante);
+            jpaRepresentanteRepository.findByDni(ong.getRepresentanteId())
+                    .ifPresent(entity::setRepresentante);
         }
+
         if (ong.getSectorId() != null) {
-            jpaSectorRepository.findById(ong.getSectorId()).ifPresent(entity::setSector);
+            jpaSectorRepository.findById(ong.getSectorId())
+                    .ifPresent(entity::setSector);
         }
+
         if (ong.getRegionId() != null) {
-            jpaRegionRepository.findById(ong.getRegionId()).ifPresent(entity::setRegion);
+            jpaRegionRepository.findById(ong.getRegionId())
+                    .ifPresent(entity::setRegion);
         }
+
         OngEntity savedEntity = jpaOngRepository.save(entity);
         return OngMapper.toDomain(savedEntity);
     }

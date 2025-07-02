@@ -24,7 +24,7 @@ public class OngController {
     private final UpdateOngUseCase updateOngUseCase;
     private final DeleteOngUseCase deleteOngUseCase;
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<OngResponseDto> createOng(@RequestBody OngRequestDto requestDto) {
         try {
             Ong domain = OngControllerMapper.toDomain(requestDto);

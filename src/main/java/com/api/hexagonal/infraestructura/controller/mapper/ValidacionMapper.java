@@ -13,8 +13,8 @@ public class ValidacionMapper {
             return null;
         return new Validacion(
                 null,
-                dto.getOngId(),
-                dto.getAdminId(),
+                null,
+                null,
                 dto.getEstadoValidacion(),
                 dto.getComentario(),
                 dto.getFechaValidacion());

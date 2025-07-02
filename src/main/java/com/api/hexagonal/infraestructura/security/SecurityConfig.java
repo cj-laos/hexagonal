@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll() // ← AGREGAR ESTO
                         .requestMatchers(HttpMethod.POST, "/api/adjuntos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/adjuntos/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/adjuntos/**").permitAll()
@@ -54,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/validaciones/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reniec/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/sunat/**").permitAll()
-                // .anyRequest().permitAll()
+                .anyRequest().permitAll()
                 );
 
         return http.build();

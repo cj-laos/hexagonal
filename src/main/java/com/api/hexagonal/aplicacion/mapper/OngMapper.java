@@ -14,10 +14,11 @@ public class OngMapper {
                 entity.getId(),
                 entity.getNombre(),
                 entity.getRuc(),
-                entity.getRepresentante() != null ? entity.getRepresentante().getId() : null,
+                entity.getRepresentante() != null ? String.valueOf(entity.getRepresentante().getId()) : null,
                 entity.getSector() != null ? entity.getSector().getId() : null,
                 entity.getRegion() != null ? entity.getRegion().getId() : null,
                 entity.getFechaRegistro());
+
     }
 
     public static OngEntity toEntity(Ong domain) {
@@ -31,7 +32,7 @@ public class OngMapper {
 
         if (domain.getRepresentanteId() != null) {
             RepresentanteEntity representanteEntity = new RepresentanteEntity();
-            representanteEntity.setId(domain.getRepresentanteId());
+            representanteEntity.setId(Integer.valueOf(domain.getRepresentanteId()));
             entity.setRepresentante(representanteEntity);
         }
         if (domain.getSectorId() != null) {

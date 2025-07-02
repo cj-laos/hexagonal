@@ -44,4 +44,18 @@ public class UpdateValidacionService implements UpdateValidacionUseCase {
             return validacionRepositoryPort.save(existingValidacion);
         });
     }
+
+    @Override
+    public boolean actualizarEstado(Integer id, String nuevoEstado, Integer adminId) {
+        Optional<Validacion> optional = validacionRepositoryPort.findById(id);
+        if (optional.isPresent()) {
+            Validacion validacion = optional.get();
+            validacion.setEstadoValidacion(nuevoEstado);
+            validacion.setAdminId(adminId); // ← importante
+            validacionRepositoryPort.save(validacion);
+            return true;
+        }
+        return false;
+    }
+
 }

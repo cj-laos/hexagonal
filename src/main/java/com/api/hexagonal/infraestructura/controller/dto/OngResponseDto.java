@@ -12,7 +12,7 @@ public class OngResponseDto {
     private Integer id;
     private String nombre;
     private String ruc;
-    private Integer representanteId;
+    private String representanteId;
     private Integer sectorId;
     private Integer regionId;
     private LocalDateTime fechaRegistro;

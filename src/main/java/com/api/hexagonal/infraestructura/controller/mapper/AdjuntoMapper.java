@@ -13,7 +13,7 @@ public class AdjuntoMapper {
             return null;
         return new Adjunto(
                 null,
-                dto.getOngId(),
+                null,
                 dto.getUrlArchivo(),
                 dto.getDescripcion());
     }

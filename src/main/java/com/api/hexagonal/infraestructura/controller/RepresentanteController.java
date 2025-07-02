@@ -28,10 +28,15 @@ public class RepresentanteController {
     private final UpdateRepresentanteUseCase updateRepresentanteUseCase;
     private final DeleteRepresentanteUseCase deleteRepresentanteUseCase;
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<RepresentanteResponseDto> createRepresentante(
             @RequestBody RepresentanteRequestDto requestDto) {
         try {
+            // Verificación si el DNI ya está registrado (agrega lógica en el caso de uso)
+            if (retrieveRepresentanteByDniUseCase.getRepresentanteByDni(requestDto.getDni()).isPresent()) {
+                throw new IllegalArgumentException("DNI ya registrado");
+            }
+
             Representante domain = RepresentanteMapper.toDomain(requestDto);
             Representante createdDomain = createRepresentanteUseCase.createRepresentante(domain);
             return new ResponseEntity<>(RepresentanteMapper.toDto(createdDomain), HttpStatus.CREATED);

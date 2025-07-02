@@ -38,12 +38,6 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ValidacionRepositoryPort validacionRepositoryPort(ValidacionRepository jpaValidacionRepository,
-            OngRepository jpaOngRepository, UsuarioAdminRepository jpaUsuarioAdminRepository) {
-        return new ValidacionRepositoryAdapter(jpaValidacionRepository, jpaOngRepository, jpaUsuarioAdminRepository);
-    }
-
-    @Bean
     public UsuarioAdminRepositoryPort usuarioAdminRepositoryPort(UsuarioAdminRepository jpaUsuarioAdminRepository) {
         return new UsuarioAdminRepositoryAdapter(jpaUsuarioAdminRepository);
     }

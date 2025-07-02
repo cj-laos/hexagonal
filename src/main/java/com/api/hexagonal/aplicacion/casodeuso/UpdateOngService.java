@@ -34,7 +34,7 @@ public class UpdateOngService implements UpdateOngUseCase {
 
             if (updatedOng.getRepresentanteId() != null
                     && !updatedOng.getRepresentanteId().equals(existingOng.getRepresentanteId())) {
-                if (!representanteRepositoryPort.findById(updatedOng.getRepresentanteId()).isPresent()) {
+                if (!representanteRepositoryPort.findByDni(updatedOng.getRepresentanteId()).isPresent()) {
                     throw new IllegalArgumentException(
                             "El Representante con ID " + updatedOng.getRepresentanteId() + " no existe.");
                 }

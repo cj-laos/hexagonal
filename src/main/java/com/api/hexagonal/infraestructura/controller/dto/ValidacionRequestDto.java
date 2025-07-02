@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ValidacionRequestDto {
-    private Integer ongId;
+    private String ruc;
     private Integer adminId;
     private String estadoValidacion;
     private String comentario;
