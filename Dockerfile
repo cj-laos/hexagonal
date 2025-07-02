@@ -1,14 +1,24 @@
-# Imagen base con Java 17 (o la versión que uses)
-FROM openjdk:21-jdk-alpine
+# Imagen base con Java 21 (Eclipse Temurin)
+FROM eclipse-temurin:21-jdk
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia el archivo jar generado por Maven/Gradle
-COPY target/*.jar app.jar
+# Copiar solo los archivos necesarios para construir (optimiza caché)
+COPY mvnw pom.xml ./
+COPY .mvn .mvn
 
-# Expone el puerto donde corre tu Spring Boot (por defecto 8080)
+# Dar permisos al wrapper de Maven
+RUN chmod +x mvnw
+
+# Instalar dependencias y compilar sin tests
+RUN ./mvnw clean package -DskipTests
+
+# Copiar el código fuente (si lo necesitas para algo más, sino ya está en el build)
+COPY src ./src
+
+# Exponer puerto de la aplicación
 EXPOSE 8080
 
-# Comando para ejecutar la app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Ejecutar el JAR generado (ajusta el nombre si es otro)
+CMD ["java", "-jar", "target/api-0.0.1-SNAPSHOT.jar", "--server.port=8080"]
