@@ -1,24 +1,24 @@
-# Imagen base con Java 21 (Eclipse Temurin)
-FROM eclipse-temurin:21-jdk
+# Imagen base con Java 21 (más liviana que openjdk)
+FROM eclipse-temurin:21-jdk-alpine
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar solo los archivos necesarios para construir (optimiza caché)
+# Copiar solo los archivos necesarios para el build (si usas mvnw)
 COPY mvnw pom.xml ./
 COPY .mvn .mvn
 
-# Dar permisos al wrapper de Maven
+# Copiar todo el código fuente
+COPY src src
+
+# Dar permiso de ejecución al wrapper de Maven
 RUN chmod +x mvnw
 
-# Instalar dependencias y compilar sin tests
+# Construir el proyecto (sin tests)
 RUN ./mvnw clean package -DskipTests
 
-# Copiar el código fuente (si lo necesitas para algo más, sino ya está en el build)
-COPY src ./src
-
-# Exponer puerto de la aplicación
+# Puerto que expondrá la app
 EXPOSE 8080
 
-# Ejecutar el JAR generado (ajusta el nombre si es otro)
-CMD ["java", "-jar", "target/api-0.0.1-SNAPSHOT.jar", "--server.port=8080"]
+# Ejecutar el jar empaquetado (ajusta el nombre si cambia)
+CMD ["java", "-jar", "target/hexagonal-0.0.1-SNAPSHOT.jar", "--server.port=8080"]
