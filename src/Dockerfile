@@ -1,5 +1,5 @@
 # Imagen base con Java 17 (o la versión que uses)
-FROM openjdk:17-jdk-alpine
+FROM openjdk:21-jdk-alpine
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
